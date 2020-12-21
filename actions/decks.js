@@ -1,4 +1,5 @@
 import {_addDeck, _addFlashcard, _getDecks, _deleteDeck} from '../utils/_DATA'
+import { NativeViewGestureHandler } from 'react-native-gesture-handler'
 
 export const RECEIVE_DECKS = 'RECEIVE_DECKS'
 export const DELETE_DECK = 'DELETE_DECK'
@@ -26,16 +27,17 @@ export function handleReceiveDecks() {
     };
 }
 
-export function addDeck(deck) {
+export function addDeck(deck, newId) {
     return {
         type: ADD_DECK,
+        id: newId,
         deck: deck
     }
 }
 
-export function handleAddDeck(title) {
+export function handleAddDeck(title, newId) {
     return (dispatch) => {
-        _addDeck(title).then((deck) => dispatch(addDeck(deck)))
+        _addDeck(title, newId).then((deck) => dispatch(addDeck(deck, newId)))
     }
 }
 

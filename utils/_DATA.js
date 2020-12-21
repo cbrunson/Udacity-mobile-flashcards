@@ -14,9 +14,14 @@ function formatCard(question, answer) {
   }
 }
 
-function formatDeck(title) {
+function formatDeck(title, newId) {
+  
+  let outId = '';
+  
+  newId ? outId = newId: outId = generateUID();
+  
   return {
-    id: generateUID(),
+    id: outId,
     title: title,
     flashcards: {}
   }
@@ -42,8 +47,8 @@ async function _saveDecks(decks) {
   await AsyncStorage.setItem(storageKey, JSON.stringify(decks));
 }
 
-export async function _addDeck(title) {
-  const formattedDeck = formatDeck(title)
+export async function _addDeck(title, newId) {
+  const formattedDeck = formatDeck(title, newId)
   const decks = await getDecksFromStorage();
   decks[formattedDeck.id] = formattedDeck;
   await _saveDecks(decks);
@@ -63,13 +68,5 @@ export async function _addFlashcard(deckId, question, answer) {
     decks[deckId].flashcards[formattedCard.id] = formattedCard;
     await _saveDecks(decks);
     return formattedCard;
-  // return new Promise((res, rej) => {
-  //   const formattedCard = formatCard({question, answer});
-
-  //   setTimeout(() => {
-  //     decks[deckId].flashcards[formattedCard.id] = formattedCard;
-  //     res({deckId: deckId, card: formattedCard});
-  //   }, 1000)
-  // })
 }
 

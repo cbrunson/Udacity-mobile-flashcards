@@ -4,6 +4,10 @@ import * as Permissions from 'expo-permissions';
 
 const NOTIFICATION_KEY = 'mobile-flashcards:notifications'
 
+export function getRandomNumber () {
+  return Math.floor(Math.random() * 100000) + 0
+}
+
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(NOTIFICATION_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)

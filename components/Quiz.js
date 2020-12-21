@@ -11,11 +11,7 @@ class Quiz extends React.Component {
     incorrect: 0,
     showAnswer: false,
   }
-
-  showAnswer = () => {
-
-  }
-
+  
   computeAccuracy = () => {
     const total = this.state.correct + this.state.incorrect;
     if (total === 0) return 0;
