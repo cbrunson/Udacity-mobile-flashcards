@@ -12,13 +12,22 @@ class AddDeck extends React.Component {
           id: 'Deck' + getRandomNumber(),
           title: '',
           cards : []
-          }
+          },
+        isFormValid: false
     }
 
     grabDeckTitle = (input) => {
         let deck = {...this.state.deck}
         deck.title = input
         this.setState(() => ({ deck }))
+        
+        if (input) {
+            //enable <TouchableOpacity> submit button
+            this.setState(() => ({ isFormValid: true }));
+        } else {
+            //disable <TouchableOpacity> submit button
+            this.setState(() => ({ isFormValid: false }));
+        }
     }
 
     resetDeckState = () => {
@@ -30,22 +39,28 @@ class AddDeck extends React.Component {
         },500)
     }
 
-    addDeck = () => {
+    addDeck = () => { 
+        if (this.state.isFormValid) {
+            const newDeck = {...this.state.deck};
 
-        const newDeck = {...this.state.deck};
-        this.props.dispatch(handleAddDeck(newDeck.title, newDeck.id));
-        let resetDeck = {...this.state.deck}
-
-        this.props.navigation.goBack();
-
-        setTimeout(() => {
-            this.props.navigation.navigate(
-            'Deck',
-            {deck: resetDeck }
-            );
-        }, 200);
-        this.resetDeckState();
+            this.props.dispatch(handleAddDeck(newDeck.title, newDeck.id));
+            let resetDeck = {...this.state.deck}
         
+            this.props.navigation.goBack();
+        
+            setTimeout(() => {
+                this.props.navigation.navigate(
+                'Deck',
+                {deck: resetDeck });
+            }, 200);
+            
+            this.resetDeckState();
+
+        } else {
+
+            alert("Please provide a name for the new deck.");
+
+        }
     }
 
     render() {     
@@ -59,7 +74,7 @@ class AddDeck extends React.Component {
                       value={this.state.deck.title} />
               </View>
               <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 100}}>
-                  <TouchableOpacity onPress={this.addDeck}>
+                  <TouchableOpacity id="submitButton" onPress={this.addDeck} active={!this.state.isFormValid} disabled={!this.state.isFormValid}>
                       <View style={{ marginVertical: 10, backgroundColor: 'blue', borderRadius: 5, padding: 10}}>
                           <Text style={{color: 'white', textAlign: 'center', fontSize: 14, fontWeight: 'bold'}}>Add Deck</Text>
                       </View>
